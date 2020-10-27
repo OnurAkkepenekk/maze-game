@@ -8,10 +8,10 @@
 #include<Windows.h>
 #define max 100
 using namespace std;
-char giris;
+char entry;
 void XY(int x, int y);
-void hareket(int lab[][max], int size);
-void harita(int lab[][max], int size);
+void move(int lab[][max], int size);
+void map(int lab[][max], int size);
 int main()
 {
 	int lab[max][max];
@@ -23,13 +23,13 @@ int main()
 	srand(time(NULL));
 	cin >> size;
 	system("color F");
-	harita(lab, size);
-	hareket(lab, size);
+	map(lab, size);
+	move(lab, size);
 	_getch();
 	system("pause");
 	return 0;
 }
-void harita(int lab[][max], int size)
+void map(int lab[][max], int size)
 {
 	int i, j;
 	lab[-1][1] = 1;
@@ -182,8 +182,8 @@ void XY(int x, int y)
 	coord.Y = y + 2;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
-ofstream koordinatlar;
-void hareket(int lab[][max], int size)
+ofstream coordinates;
+void move(int lab[][max], int size)
 {
 	cout << endl << endl;
 	cout << " Use W,A,S,D To Move!" << endl;
@@ -193,39 +193,39 @@ void hareket(int lab[][max], int size)
 	int y = 0;
 	int xCln = 1;
 	int yCln = 0;
-	int altýn = 0;
+	int gold = 0;
 
-	koordinatlar.open("hareket.txt", ios_base::app);
+	coordinates.open("hareket.txt", ios_base::app);
 	while (true)
 	{
 		XY(xCln, yCln);
 		cout << " ";
 		XY(x, y);
 		cout << char(175);
-		giris = _getch();
+		entry = _getch();
 		xCln = x;
 		yCln = y;
 
-		if (giris == 'w' || giris == 'W')
+		if (entry == 'w' || entry == 'W')
 		{
 			y -= 1;
-			koordinatlar << y << "," << x << "\n";
+			coordinates << y << "," << x << "\n";
 
 		}
-		if (giris == 's' || giris == 'S')
+		if (entry == 's' || entry == 'S')
 		{
 			y += 1;
-			koordinatlar << y << "," << x << "\n";
+			coordinates << y << "," << x << "\n";
 		}
-		if (giris == 'a' || giris == 'A')
+		if (entry == 'a' || entry == 'A')
 		{
 			x -= 1;
-			koordinatlar << y << "," << x << "\n";
+			coordinates << y << "," << x << "\n";
 		}
-		if (giris == 'd' || giris == 'D')
+		if (entry == 'd' || entry == 'D')
 		{
 			x += 1;
-			koordinatlar << y << "," << x << "\n";
+			coordinates << y << "," << x << "\n";
 		}
 		if (lab[y][x] == 1)
 		{
@@ -235,13 +235,13 @@ void hareket(int lab[][max], int size)
 		if (lab[y][x] == 3)
 		{
 			lab[y][x] = 0;
-			altýn++;
+			gold++;
 		}
 		if (lab[y][x] == 4)
 		{
 			x = 1;
 			y = 0;
-			altýn = 0;
+			gold = 0;
 		}
 		if (lab[y][x] == 2)
 		{
@@ -251,9 +251,9 @@ void hareket(int lab[][max], int size)
 			cout << "                *****************************************************************             " << endl;
 			cout << "Congratulations , You Win !!!" << endl;
 			cout << endl;
-			cout << "TOTAL OF GOLDS : " << altýn << endl;
+			cout << "TOTAL OF GOLDS : " << gold << endl;
 			cout << endl;
-			koordinatlar.close();
+			coordinates.close();
 			break;
 		}
 	}
